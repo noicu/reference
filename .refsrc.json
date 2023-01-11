@@ -1,7 +1,8 @@
 {
+  "title": "Noicu Reference",
   "description": "{{description}}，为开发人员分享快速参考备忘单。",
   "keywords": "reference,Quick,Reference,cheatsheet,cheat,sheet",
-  "data-info": "👆待完善需要您的参与",
+  "data-info": "👆待完善",
   "search": {
     "label": "搜索",
     "placeholder": "搜索备忘清单",
