@@ -1199,6 +1199,278 @@ fn dead_end() -> ! {
 ```
 <!--rehype:className=wrap-text -->
 
+Rust 泛型与特质
+--------
+
+### Rust 语言中的泛型
+
+Rust 语言中的泛型主要包含 泛型集合、泛型结构体、泛型函数、范型枚举 和 特质 几个方面。
+
+例如下面的两个类型
+
+```rust
+age: i32
+age: String
+```
+
+使用泛型，则可以直接声明为
+
+```rust
+age:T
+```
+
+然后在使用过程中指定 T 的类型为 i32 或 String 即可。
+
+### 泛型集合
+
+比如常用向量 Vec 就是泛型。它可以是一个字符串向量，也可以是一个整型向量。
+
+下面的代码中，我们定义了一个泛型集合，它可以存储任何类型的数据。
+
+```rust
+fn main(){
+   let mut vector_integer: Vec<i32> = vec![20,30];
+   let mut vector_string: Vec<String> = vec!["hello".to_string(),"world".to_string()];
+
+   vector_integer.push(40);
+   vector_string.push("rust".to_string());
+
+   println!("{:?}",vector_integer);
+   println!("{:?}",vector_string);
+}
+```
+
+### 特质 `trait`
+
+特质是 Rust 语言中的一个重要概念，它是一种抽象的接口，可以用来定义一组方法，然后可以在 Rust 中实现这些方法。
+
+特质的定义语法如下：
+
+```rust
+trait TraitName {
+    fn method_name(&self) -> String;
+}
+```
+
+下面的范例，我们定义了一个特质，然后在结构体中实现了这个特质。
+
+```rust
+// 定义特质
+trait TraitName {
+    fn method_name(&self) -> String;
+}
+
+// 定义结构体
+struct Data {
+    member: String,
+}
+
+// 为 Data 实现 TraitName 特质
+impl TraitName for Data {
+    fn method_name(&self) -> String {
+        self.member.clone()
+    }
+}
+
+fn main() {
+  // 实例化 Data 结构体
+    let data = Data {
+        member: String::from("hello"),
+    };
+
+    // 调用特质中的方法
+    println!("{:?}", data.method_name());
+}
+```
+
+编译运行以上 Rust 范例，输出结果如下
+
+```rust
+"hello"
+```
+
+### 泛型特质
+
+泛型特质的定义语法如下：
+
+```rust
+trait TraitName<T> {
+    fn method_name(&self) -> T;
+}
+```
+
+下面的范例，我们定义了一个泛型特质，然后在结构体中实现了这个泛型特质。
+
+```rust
+trait TraitName<T> {
+    fn method_name(&self) -> T;
+}
+
+struct Data<T> {
+    member: T,
+}
+
+impl<T> TraitName<T> for Data<T> {
+    fn method_name(&self) -> T {
+        self.member.clone()
+    }
+}
+
+fn main() {
+    let data_integer = Data { member: 20 };
+    let data_string = Data {
+        member: String::from("hello"),
+    };
+    println!("{:?}", data_integer.method_name());
+    println!("{:?}", data_string.method_name());
+}
+```
+
+编译运行以上 Rust 范例，输出结果如下
+
+```rust
+20
+"hello"
+```
+
+### 泛型函数
+
+泛型函数的定义语法如下：
+
+```rust
+// 定义泛型函数 
+// T 是泛型参数
+// T 是一个占位符，可以是任意类型
+// T 可以是任意类型，比如 i32、String 等
+fn function_name<T>(parameter: T) -> T {
+    parameter
+}
+```
+
+下面的范例，我们定义了一个泛型函数，然后在 main 函数中调用这个泛型函数。
+
+```rust
+fn function_name<T>(parameter: T) -> T {
+    parameter
+}
+
+fn main() {
+    let integer = function_name(20);
+    let string = function_name(String::from("hello"));
+    println!("{:?}", integer);
+    println!("{:?}", string);
+}
+```
+
+编译运行以上 Rust 范例，输出结果如下
+
+```rust
+20
+"hello"
+```
+
+### 泛型结构体
+
+我们也可以把某个结构体声明为泛型的，泛型结构体 主要是结构体的成员类型可以是泛型。
+
+泛型结构体的定义语法如下：
+
+```rust
+struct StructName<T> {
+    member: T,
+}
+```
+
+下面的范例，我们定义了一个泛型结构体，然后在 main 函数中创建这个泛型结构体。
+
+```rust
+struct StructName<T> {
+    member: T,
+}
+
+fn main() {
+    let integer = StructName { member: 20 };
+    let string = StructName {
+        member: String::from("hello"),
+    };
+    println!("{:?}", integer.member);
+    println!("{:?}", string.member);
+}
+```
+
+编译运行以上 Rust 范例，输出结果如下
+
+```rust
+20
+"hello"
+```
+
+### 泛型枚举
+
+我们也可以把某个枚举声明为泛型的，泛型枚举 主要是枚举的成员类型可以是泛型。
+
+泛型枚举的定义语法如下：
+
+```rust
+enum EnumName<T> {
+    Member(T),
+}
+```
+
+下面的范例，我们定义了一个泛型枚举，然后在 main 函数中创建这个泛型枚举。
+
+```rust
+enum EnumName<T> {
+    Member(T),
+}
+
+fn main() {
+    let integer = EnumName::Member(20);
+    let string = EnumName::Member(String::from("hello"));
+    println!("{:?}", integer);
+    println!("{:?}", string);
+}
+```
+
+编译运行以上 Rust 范例，输出结果如下
+
+```rust
+Member(20)
+Member("hello")
+```
+
+### 泛型类型别名
+
+我们也可以把某个类型别名声明为泛型的，泛型类型别名 主要是类型别名的类型可以是泛型。
+
+泛型类型别名的定义语法如下：
+
+```rust
+type TypeName<T> = T;
+```
+
+下面的范例，我们定义了一个泛型类型别名，然后在 main 函数中使用这个泛型类型别名。
+
+```rust
+type TypeName<T> = T;
+
+fn main() {
+    let integer: TypeName<i32> = 20;
+    let string: TypeName<String> = String::from("hello");
+    println!("{:?}", integer);
+    println!("{:?}", string);
+}
+```
+
+编译运行以上 Rust 范例，输出结果如下
+
+```rust
+20
+"hello"
+```
+
+<!--rehype:className=wrap-text -->
+
 惯用转换
 -----
 
